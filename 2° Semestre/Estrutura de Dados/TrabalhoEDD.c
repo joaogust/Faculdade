@@ -24,9 +24,22 @@ void bubbleSort(int vetor[TAM]){
 	}
 }
 
+void leituraArq(int vetor[TAM], FILE *file, int i) {
+	char linha[100000], *token;
+	
+	if(fgets(linha, sizeof(linha), file) != NULL) {
+		token = strtok(linha, ",");
+		while(token != NULL && i<TAM) {
+			vetor[i] = atoi(token);
+			i++;
+			token = strtok(NULL, ",");
+		}
+	}
+}
+
 int main() {
 	FILE * file;
-	char nome[100], linha[100000], *token;
+	char nome[100];
 	int *vetor = (int *)malloc(TAM * sizeof(int));
 	int i=0;	
 	double time_spent = 0.0;
@@ -42,28 +55,15 @@ int main() {
 		return 1;
 	} 
 	
-	if(fgets(linha, sizeof(linha), file) != NULL) {
-		token = strtok(linha, ",");
-		while(token != NULL && i<TAM) {
-			vetor[i] = atoi(token);
-			i++;
-			token = strtok(NULL, ",");
-		}
+	for(int f=0; f<1000; f++) {
+		leituraArq(vetor, file, i);
+		clock_t begin = clock();
+		bubbleSort(vetor);
+		clock_t end = clock();
+		time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
 	}
 	
 	fclose(file);
 	
-	clock_t begin = clock();
-	for(int f=0; f<1000; f++) {
-		bubbleSort(vetor);
-	}
-	clock_t end = clock();
-	
-	time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-	
-	for(int j=0; j<i; j++) {
-			printf("%d  ", vetor[j]);
-	}
-	
-	printf("\n\nO tempo de espera foi de %f", time_spent);
+	printf("\n\nO tempo de espera médio foi de %f", time_spent/1000);
 }
