@@ -1,20 +1,19 @@
 // Computador:  C:\\Users\\CLIENTE\\Documents\\numeros.txt
-// Notebook:  C:\\Users\\Anderson\\OneDrive\\Documentos\\numeros.txt
+// Notebook:  C:\\Users\\Anderson\\OneDrive\\Documentos\\NumerosParaOrdenar.txt
 // Linux: /home/estudante2/Downloads/NumerosParaOrdenar.txt
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 
-#define TAM 5000
+#define TAM 500
 
-void bubbleSort(int vetor[TAM]){
+void bubbleSort(int *vetor, int t){
 	
 	int i, j, x;
 	
-	for(i=0; i<TAM-1; i++) {
-		for(j=0; j<TAM-i-1; j++) {
+	for(i=0; i<t-1; i++) {
+		for(j=0; j<t-i-1; j++) {
 			if(vetor[j] > vetor[j+1]) {
 				x = vetor[j];
 				vetor[j] = vetor[j+1];
@@ -24,12 +23,29 @@ void bubbleSort(int vetor[TAM]){
 	}
 }
 
-void leituraArq(int vetor[TAM], FILE *file, int i) {
+void selectionSort(int *vetor, int t){
+	int i, j, min, x;
+	
+	for (i=0; i<t; i++) {
+		min = i;
+		for (j=i+1; j<=t; j++)
+			if (vetor[j] < vetor[min])
+				min = j;
+		x = vetor[min];
+		vetor[min] = vetor[i];
+		vetor[i] = x;
+	}
+}
+
+void leituraArq(int *vetor, FILE *file, int t) {
+	int i=0;
 	char linha[100000], *token;
+	
+	rewind(file);
 	
 	if(fgets(linha, sizeof(linha), file) != NULL) {
 		token = strtok(linha, ",");
-		while(token != NULL && i<TAM) {
+		while(token != NULL && i<t) {
 			vetor[i] = atoi(token);
 			i++;
 			token = strtok(NULL, ",");
@@ -40,12 +56,11 @@ void leituraArq(int vetor[TAM], FILE *file, int i) {
 int main() {
 	FILE * file;
 	char nome[100];
-	int *vetor = (int *)malloc(TAM * sizeof(int));
-	int i=0;	
+	int *vetor = NULL;
+	int t;	
 	double time_spent = 0.0;
 	
 	printf("Digite o endereço do arquivo: ");
-	
 	scanf("%99s", nome);
 	
 	file = fopen(nome, "r");
@@ -55,15 +70,56 @@ int main() {
 		return 1;
 	} 
 	
-	for(int f=0; f<1000; f++) {
-		leituraArq(vetor, file, i);
-		clock_t begin = clock();
-		bubbleSort(vetor);
-		clock_t end = clock();
-		time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+	
+	printf("\n\n--------------- Bubblesort ---------------\n\n");
+	
+	for(t = TAM; t <= 5000; t += TAM) {
+		vetor = (int *) malloc (t * sizeof(int)); 
+		if(vetor == NULL) {
+			printf("Nao foi possível alocar memória para o vetor...");
+			fclose(file);
+			return 1;
+		}
+			for(int f=0; f<1000; f++) {
+				leituraArq(vetor, file, t);
+				
+				clock_t begin = clock();
+				bubbleSort(vetor, t);
+				clock_t end = clock();
+				
+				time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+				
+			}
+		printf("%d: %f\n", t, time_spent/1000);
+		time_spent = 0;
+		
+		free(vetor);
 	}
 	
-	fclose(file);
+	printf("\n\n--------------- Selectionsort ---------------\n\n");
 	
-	printf("\n\nO tempo de espera médio foi de %f", time_spent/1000);
+	for(t = TAM; t <= 5000; t += TAM) {
+		vetor = (int *) malloc (t * sizeof(int)); 
+		if(vetor == NULL) {
+			printf("Nao foi possível alocar memória para o vetor...");
+			fclose(file);
+			return 1;
+		}
+			for(int f=0; f<1000; f++) {
+				leituraArq(vetor, file, t);
+				
+				clock_t begin = clock();
+				selectionSort(vetor, t);
+				clock_t end = clock();
+				
+				time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+				
+			}
+		printf("%d: %f\n", t, time_spent/1000);
+		time_spent = 0;
+		
+		free(vetor);
+	}
+		
+	fclose(file);
 }
