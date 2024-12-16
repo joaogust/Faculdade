@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-// Definição de instruções
+// DefiniÃ§Ã£o de instruÃ§Ãµes
 #define NOP 0x00
 #define STA 0x10
 #define LDA 0x20
@@ -16,7 +16,7 @@
 #define JZ 0xA0
 #define HLT 0xF0
 
-// Função para transformar caracteres minúsculos em maiúsculos
+// FunÃ§Ã£o para transformar caracteres minÃºsculos em maiÃºsculos
 void maiusculo(char *str) {
     while (*str) {
         *str = toupper((unsigned char) *str);
@@ -24,13 +24,13 @@ void maiusculo(char *str) {
     }
 }
 int main(void) {
-    char nome[1000]; // Endereço do arquivo
+    char nome[1000]; // EndereÃ§o do arquivo
     FILE *file, *mem; // Ponteiro para os arquivos .txt e .mem
-    unsigned char dados[512]; // Conteúdo que vai para o .mem
+    unsigned char dados[512]; // ConteÃºdo que vai para o .mem
     char assembly[3], linha[512]; // Assembly: vai guardar os opcodes | Linha: uma string utilizada para armazenar uma linha do arquivo de entrada
-    int i = 0; // controla a posição no array de dados
+    int i = 0; // controla a posiÃ§Ã£o no array de dados
     
-	// incluindo cabeçalho em dados
+	// incluindo cabeÃ§alho em dados
     dados[i++] = 0x03;
     dados[i++] = 0x4E;
     dados[i++] = 0x44;
@@ -42,7 +42,7 @@ int main(void) {
     // Abre o arquivo para leitura
     file = fopen(nome, "r");
     if (file == NULL) {
-        printf("Não foi possível abrir o arquivo\n");
+        printf("NÃ£o foi possÃ­vel abrir o arquivo\n");
         return 1;
     } else {
         printf("Dados do arquivo txt:\n");
@@ -50,24 +50,24 @@ int main(void) {
             printf("%s", linha);
         }
     }
-	// Criação de arquivo de saída
+	// CriaÃ§Ã£o de arquivo de saÃ­da
     mem = fopen("prog1.mem", "wb");
     if (mem == NULL) {
-        printf("Não foi possível criar o arquivo .mem\n");
+        printf("NÃ£o foi possÃ­vel criar o arquivo .mem\n");
         fclose(file);
         return 1;
     }
     rewind(file);
 	/*
-	A função rewind(file) reposiciona o ponteiro
-	do arquivo de volta ao início, permitindo que o arquivo
-	seja lido novamente desde o começo.
-	Isso é necessário porque, após a primeira leitura do arquivo,
-	o ponteiro estará no final, e sem o `rewind`,
-	não seria possível ler o arquivo novamente.
+	A funÃ§Ã£o rewind(file) reposiciona o ponteiro
+	do arquivo de volta ao inÃ­cio, permitindo que o arquivo
+	seja lido novamente desde o comeÃ§o.
+	Isso Ã© necessÃ¡rio porque, apÃ³s a primeira leitura do arquivo,
+	o ponteiro estarÃ¡ no final, e sem o `rewind`,
+	nÃ£o seria possÃ­vel ler o arquivo novamente.
 	*/
     
-	// Leitura de instruções em assembly e armazenamento dos opcodes no .mem
+	// Leitura de instruÃ§Ãµes em assembly e armazenamento dos opcodes no .mem
     while (fscanf(file, "%s", assembly) != EOF) {
 		maiusculo(assembly);
         if (strcmp(assembly, "NOP") == 0) {
@@ -113,7 +113,7 @@ int main(void) {
             dados[i++] = NOP;
     }
     
-	// Alocando o conteúdo de dados no arquivo .mem
+	// Alocando o conteÃºdo de dados no arquivo .mem
     fwrite(dados, sizeof(unsigned char), 512, mem);
     
 	// Fechando arquivos
