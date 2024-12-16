@@ -26,8 +26,18 @@ def formatar_nome(nome):
 
 
 def formatar(cadastro):
-    cadastro.email = validar_email(cadastro.email)
-    cadastro.nome = formatar_nome(cadastro.nome)
+    try:
+        cadastro.email = validar_email(cadastro.email)
+    except ValueError as e:
+        print(e)
+        return False
+    try:
+        cadastro.nome = formatar_nome(cadastro.nome)
+    except ValueError as e:
+        print(e)
+        return False  
+    return True 
+
 
 def main():
     nome = input("Digite seu nome completo: ")
