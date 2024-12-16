@@ -9,7 +9,6 @@
 #define TAM 500
 
 void bubbleSort(int *vetor, int t){
-	
 	int i, j, x;
 	
 	for(i=0; i<t-1; i++) {
