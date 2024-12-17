@@ -90,24 +90,23 @@ class Workshop(Evento):
     @vagas.setter
     def vagas(self, vagas):
         if not isinstance(vagas, int) or vagas <= 0:
-            raise ValueError("O número de vagas deve ser um inteiro positivo.")
+            raise ValueError("O número de vagas deve ser positivo.")
         self._vagas = vagas
 
     def detalhes(self):
         return f"WORKSHOP\nNome: {self.nome}\nData: {self.data}\nLocal: {self.local}\nVagas: {self.vagas}\n"
 
 
-# Função para mostrar detalhes do evento
-def mostrar_detalhes_do_evento(evento):
+def mostrarDetalhesDoEvento(evento):
     print(evento.detalhes())
 
 
-# Teste com instâncias
 congresso = Congresso(nome="Congresso IFSP", data="31/12/2024", local="IFSP, Campus São Paulo", n_trabalhos=100)
 palestra = Palestra(nome="Inteligência Artificial", data="31/12/2024", local="IFSP, Campus São Paulo", palestrante="João")
 workshop = Workshop(nome="Computação Quântica", data="31/12/2024", local="IFSP, Campus São Paulo", vagas=1000)
 
-# Mostrar detalhes dos eventos
-mostrar_detalhes_do_evento(congresso)
-mostrar_detalhes_do_evento(palestra)
-mostrar_detalhes_do_evento(workshop)
+mostrarDetalhesDoEvento(congresso)
+
+mostrarDetalhesDoEvento(palestra)
+
+mostrarDetalhesDoEvento(workshop)
