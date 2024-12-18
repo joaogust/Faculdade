@@ -113,6 +113,35 @@ void leituraArq(int *vetor, FILE *file, int t) {
 	}
 }
 
+void troca(int vetor[], int i, int j) {
+	int aux = vetor[i];
+	vetor[i] = vetor[j];
+	vetor[j] = aux;
+}
+
+int divisao(int vetor[], int inicio, int fim) {
+	int pivo = vetor[fim];
+	int indicePivo = inicio;		         	    
+
+	for(int i = inicio; i < fim; i++) {
+		if(vetor[i] <= pivo) {
+			troca(vetor, i, indicePivo);
+			indicePivo++;
+		}
+	}
+	
+	troca(vetor, indicePivo, fim);
+	return indicePivo;
+}
+
+void quickSort(int vetor[], int inicio, int fim) {
+	if (inicio < fim) {
+		int indicePivo = divisao(vetor, inicio, fim);
+		quickSort(vetor, inicio, indicePivo - 1);
+		quickSort(vetor, indicePivo + 1, fim);
+	}	
+}
+
 int main() {
 	FILE * file;
 	char nome[100];
@@ -206,6 +235,31 @@ int main() {
 	} 
 		
 	printf("\n\n--------------- Mergesort ---------------\n\n");
+	
+	for(t = TAM; t <= 5000; t += TAM) {
+		vetor = (int *) malloc (t * sizeof(int)); 
+		if(vetor == NULL) {
+			printf("Nao foi possível alocar memória para o vetor...");
+			fclose(file);
+			return 1;
+		}
+			for(int f=0; f<1000; f++) {
+				leituraArq(vetor, file, t);
+				
+				clock_t begin = clock();
+				mergeSort(vetor, 0 , t-1);
+				clock_t end = clock();
+				
+				time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+				
+			}
+		printf("%d: %f\n", t, time_spent/1000);
+		time_spent = 0;
+		
+		free(vetor);
+	} 
+	
+	printf("\n\n--------------- Quicksort ---------------\n\n");
 	
 	for(t = TAM; t <= 5000; t += TAM) {
 		vetor = (int *) malloc (t * sizeof(int)); 
