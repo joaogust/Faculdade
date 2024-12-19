@@ -8,6 +8,7 @@
 
 #define TAM 500
 
+// Bubblesort
 void bubbleSort(int *vetor, int t){
 	int i, j, x;
 	
@@ -22,6 +23,7 @@ void bubbleSort(int *vetor, int t){
 	}
 }
 
+// Insertionsort
 void insertionSort(int *vetor, int t) {
 	int i=0, j, x;
 	
@@ -34,6 +36,7 @@ void insertionSort(int *vetor, int t) {
 	}
 }
 
+// Selectionsort
 void selectionSort(int *vetor, int t){
 	int i, j, min, x;
 	
@@ -47,7 +50,8 @@ void selectionSort(int *vetor, int t){
 		vetor[i] = x;
 	}
 }
-	
+
+// Mergesort	
 void conquista(int *vetor, int esq, int dir, int meio) {
 	int tamEsq = meio - esq + 1;					
 	int tamDir = dir - meio;						
@@ -97,6 +101,7 @@ void mergeSort(int *vetor, int esq, int dir) {
 	}
 }
 
+// Quicksort
 void troca(int vetor[], int i, int j) {
 	int aux = vetor[i];
 	vetor[i] = vetor[j];
@@ -126,6 +131,7 @@ void quickSort(int vetor[], int inicio, int fim) {
 	}	
 }
 
+// Radixsort
 void radixSort(int *vetor, int t) {
 	int maior = 0, base = 1, i;
 	int	baldes[10], aux[t] = {0};
@@ -162,6 +168,7 @@ void radixSort(int *vetor, int t) {
 	}
 }
 
+// Heapsort
 void sift(int *vetor, int i, int t){
 	int esq = 2 * i;
 	int dir = 2 * i + 1;
@@ -204,6 +211,7 @@ void heapSort(int *vetor, int t) {
 	}
 }
 
+// Leitura do arquivo
 void leituraArq(int *vetor, FILE *file, int t) {
 	int i=0;
 	char linha[100000], *token;
@@ -311,7 +319,7 @@ int main() {
 		
 		free(vetor);
 	} 
-		
+	
 	printf("\n\n--------------- Mergesort ---------------\n\n");
 	
 	for(t = TAM; t <= 5000; t += TAM) {
