@@ -97,6 +97,12 @@ void mergeSort(int *vetor, int esq, int dir) {
 	}
 }
 
+void troca(int vetor[], int i, int j) {
+	int aux = vetor[i];
+	vetor[i] = vetor[j];
+	vetor[j] = aux;
+}
+
 int divisao(int vetor[], int inicio, int fim) {
 	int pivo = vetor[fim];
 	int indicePivo = inicio;		         	    
@@ -118,12 +124,6 @@ void quickSort(int vetor[], int inicio, int fim) {
 		quickSort(vetor, inicio, indicePivo - 1);
 		quickSort(vetor, indicePivo + 1, fim);
 	}	
-}
-
-void troca(int vetor[], int i, int j) {
-	int aux = vetor[i];
-	vetor[i] = vetor[j];
-	vetor[j] = aux;
 }
 
 void radixSort(int *vetor, int t) {
@@ -159,6 +159,48 @@ void radixSort(int *vetor, int t) {
 		}
 		
 		base *= 10;
+	}
+}
+
+void sift(int *vetor, int i, int t){
+	int esq = 2 * i;
+	int dir = 2 * i + 1;
+	int maior = i;
+	
+	if(i==0) {
+		esq = 1;
+		dir = 2;
+	}
+	
+	if (esq <= t && vetor[esq] > vetor[maior]) {
+		maior = esq;
+	}
+	
+	if (dir <= t && vetor[dir] > vetor[maior]) {
+		maior = dir; 
+	}
+	
+	if (maior != i) {
+		int aux = vetor[i];
+		vetor[i] = vetor[maior];
+		vetor[maior] = aux;
+		sift(vetor, maior, t);
+	}
+}
+
+void build(int *vetor, int t) {
+	for (int i = t/2; i>0; i--) {
+		sift(vetor, i, t);
+	}
+}
+
+void heapSort(int *vetor, int t) {
+	build(vetor, t);
+	for (int i = t; i>0; i--) {
+		int aux = vetor[i];
+		vetor[i] = vetor[0];
+		vetor[0] = aux;
+		sift(vetor, 0, i-1);
 	}
 }
 
@@ -367,6 +409,9 @@ int main() {
 		printf("%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
 		
+		for(int i = 0; i < t && t==5000; i++) {
+		printf("%d ", vetor[i]);
+		}
 		free(vetor);
 	} 
 		
