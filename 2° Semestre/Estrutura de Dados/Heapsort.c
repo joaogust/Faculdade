@@ -24,7 +24,7 @@ void sift(int *vetor, int i, int t){
 }
 
 void build(int *vetor, int t) {
-	for (int i = t/2; i>0; i--) {
+	for (int i = t/2; i>=0; i--) {
 		sift(vetor, i, t);
 	}
 }
@@ -40,9 +40,9 @@ void heapSort(int *vetor, int t) {
 }
 	
 int main () {
-	int vetor[TAM] = {8, 7, 6, 5, 4, 3, 2, 1};
-	int t = TAM;
-	heapSort(vetor, t-1);
+	int vetor[TAM] = {6,3,23,7,1,3,2,56};
+	
+	heapSort(vetor, TAM-1);
 	
 	for(int i = 0; i < TAM; i++) {
 		printf("%d ", vetor[i]);
