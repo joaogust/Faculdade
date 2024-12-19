@@ -97,28 +97,6 @@ void mergeSort(int *vetor, int esq, int dir) {
 	}
 }
 
-void leituraArq(int *vetor, FILE *file, int t) {
-	int i=0;
-	char linha[100000], *token;
-	
-	rewind(file);
-	
-	if(fgets(linha, sizeof(linha), file) != NULL) {
-		token = strtok(linha, ",");
-		while(token != NULL && i<t) {
-			vetor[i] = atoi(token);
-			i++;
-			token = strtok(NULL, ",");
-		}
-	}
-}
-
-void troca(int vetor[], int i, int j) {
-	int aux = vetor[i];
-	vetor[i] = vetor[j];
-	vetor[j] = aux;
-}
-
 int divisao(int vetor[], int inicio, int fim) {
 	int pivo = vetor[fim];
 	int indicePivo = inicio;		         	    
@@ -140,6 +118,64 @@ void quickSort(int vetor[], int inicio, int fim) {
 		quickSort(vetor, inicio, indicePivo - 1);
 		quickSort(vetor, indicePivo + 1, fim);
 	}	
+}
+
+void troca(int vetor[], int i, int j) {
+	int aux = vetor[i];
+	vetor[i] = vetor[j];
+	vetor[j] = aux;
+}
+
+void radixSort(int *vetor, int t) {
+	int maior = 0, base = 1, i;
+	int	baldes[10], aux[t] = {0};
+	
+	for(i = 0; i < t; i++) {
+		if(vetor[i] > maior) {
+			maior = vetor[i];
+		}
+	}
+	
+	while(maior / base > 0) {
+		
+		for(i = 0; i < 10; i++) {
+			baldes[i] = 0;
+		}
+		
+		for(i = 0; i < t; i++) {
+			baldes[(vetor[i] / base) % 10] += 1;
+		}
+						
+		for(i = 1; i < 10; i++) {						
+			baldes[i] += baldes[i-1];
+		}		
+		for(i = t - 1; i >= 0; i--) {							
+			aux[baldes[(vetor[i] / base) % 10] - 1] = vetor[i];
+			baldes[(vetor[i] / base) % 10]--;
+		}
+		
+		for(i = 0; i < t; i++) {
+			vetor[i] = aux[i];
+		}
+		
+		base *= 10;
+	}
+}
+
+void leituraArq(int *vetor, FILE *file, int t) {
+	int i=0;
+	char linha[100000], *token;
+	
+	rewind(file);
+	
+	if(fgets(linha, sizeof(linha), file) != NULL) {
+		token = strtok(linha, ",");
+		while(token != NULL && i<t) {
+			vetor[i] = atoi(token);
+			i++;
+			token = strtok(NULL, ",");
+		}
+	}
 }
 
 int main() {
@@ -282,7 +318,58 @@ int main() {
 		time_spent = 0;
 		
 		free(vetor);
+	}
+	
+	printf("\n\n--------------- Radixsort ---------------\n\n");
+	
+	for(t = TAM; t <= 5000; t += TAM) {
+		vetor = (int *) malloc (t * sizeof(int)); 
+		if(vetor == NULL) {
+			printf("Nao foi possível alocar memória para o vetor...");
+			fclose(file);
+			return 1;
+		}
+			for(int f=0; f<1000; f++) {
+				leituraArq(vetor, file, t);
+				
+				clock_t begin = clock();
+				radixSort(vetor, t);
+				clock_t end = clock();
+				
+				time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+				
+			}
+		printf("%d: %f\n", t, time_spent/1000);
+		time_spent = 0;
+		
+		free(vetor);
+	} 
+	
+	printf("\n\n--------------- Heapsort ---------------\n\n");
+	
+	for(t = TAM; t <= 5000; t += TAM) {
+		vetor = (int *) malloc (t * sizeof(int)); 
+		if(vetor == NULL) {
+			printf("Nao foi possível alocar memória para o vetor...");
+			fclose(file);
+			return 1;
+		}
+			for(int f=0; f<1000; f++) {
+				leituraArq(vetor, file, t);
+				
+				clock_t begin = clock();
+				heapSort(vetor, t);
+				clock_t end = clock();
+				
+				time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+				
+			}
+		printf("%d: %f\n", t, time_spent/1000);
+		time_spent = 0;
+		
+		free(vetor);
 	} 
 		
 	fclose(file);
+	
 }
