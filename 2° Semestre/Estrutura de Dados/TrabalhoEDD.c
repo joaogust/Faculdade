@@ -174,11 +174,6 @@ void sift(int *vetor, int i, int t){
 	int dir = 2 * i + 1;
 	int maior = i;
 	
-	if(i==0) {
-		esq = 1;
-		dir = 2;
-	}
-	
 	if (esq <= t && vetor[esq] > vetor[maior]) {
 		maior = esq;
 	}
@@ -196,7 +191,7 @@ void sift(int *vetor, int i, int t){
 }
 
 void build(int *vetor, int t) {
-	for (int i = t/2; i>0; i--) {
+	for (int i = t/2; i>=0; i--) {
 		sift(vetor, i, t);
 	}
 }
@@ -416,6 +411,10 @@ int main() {
 			}
 		printf("%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
+		
+		for(int i = 0; i < t && t == 5000; i++) {
+		printf("%d ", vetor[i]);
+		}
 		
 		free(vetor);
 	} 
