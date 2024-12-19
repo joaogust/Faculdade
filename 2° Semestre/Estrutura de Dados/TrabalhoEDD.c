@@ -409,9 +409,6 @@ int main() {
 		printf("%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
 		
-		for(int i = 0; i < t && t==5000; i++) {
-		printf("%d ", vetor[i]);
-		}
 		free(vetor);
 	} 
 		
