@@ -1,6 +1,3 @@
-// Computador:  C:\\Users\\CLIENTE\\Documents\\numeros.txt
-// Notebook:  C:\\Users\\Anderson\\OneDrive\\Documentos\\NumerosParaOrdenar.txt
-// Linux: /home/estudante2/Downloads/NumerosParaOrdenar.txt
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -131,43 +128,6 @@ void quickSort(int vetor[], int inicio, int fim) {
 	}	
 }
 
-// Radixsort
-void radixSort(int *vetor, int t) {
-	int maior = 0, base = 1, i;
-	int	baldes[10], aux[t] = {0};
-	
-	for(i = 0; i < t; i++) {
-		if(vetor[i] > maior) {
-			maior = vetor[i];
-		}
-	}
-	
-	while(maior / base > 0) {
-		
-		for(i = 0; i < 10; i++) {
-			baldes[i] = 0;
-		}
-		
-		for(i = 0; i < t; i++) {
-			baldes[(vetor[i] / base) % 10] += 1;
-		}
-						
-		for(i = 1; i < 10; i++) {						
-			baldes[i] += baldes[i-1];
-		}		
-		for(i = t - 1; i >= 0; i--) {							
-			aux[baldes[(vetor[i] / base) % 10] - 1] = vetor[i];
-			baldes[(vetor[i] / base) % 10]--;
-		}
-		
-		for(i = 0; i < t; i++) {
-			vetor[i] = aux[i];
-		}
-		
-		base *= 10;
-	}
-}
-
 // Heapsort
 void sift(int *vetor, int i, int t){
 	int esq = 2 * i;
@@ -225,6 +185,7 @@ void leituraArq(int *vetor, FILE *file, int t) {
 
 int main() {
 	FILE * file;
+	FILE * arqtxt;
 	char nome[100];
 	int *vetor = NULL;
 	int t;	
@@ -233,6 +194,9 @@ int main() {
 	printf("Digite o endereço do arquivo: ");
 	scanf("%99s", nome);
 	
+	remove("nome_algoritmo_n.txt");
+	arqtxt = fopen("nome_algoritmo_n.txt", "a");
+	
 	file = fopen(nome, "r");
 	
 	if(file == NULL) {
@@ -240,7 +204,10 @@ int main() {
 		return 1;
 	} 
 	
+	fprintf(arqtxt, "%s", "Relatório dos tipos de ordenação:\n\n");
+	
 	printf("\n\n--------------- Bubblesort ---------------\n\n");
+	fprintf(arqtxt, "\n\n--------------- Bubblesort ---------------\n\n");
 	
 	for(t = TAM; t <= 5000; t += TAM) {
 		vetor = (int *) malloc (t * sizeof(int)); 
@@ -260,12 +227,14 @@ int main() {
 				
 			}
 		printf("%d: %f\n", t, time_spent/1000);
+		fprintf(arqtxt, "%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
 		
 		free(vetor);
 	}
 	
 	printf("\n\n--------------- Insertionsort ---------------\n\n");
+	fprintf(arqtxt, "\n\n--------------- Insertionsort ---------------\n\n");
 	
 	for(t = TAM; t <= 5000; t += TAM) {
 		vetor = (int *) malloc (t * sizeof(int)); 
@@ -285,12 +254,14 @@ int main() {
 				
 			}
 		printf("%d: %f\n", t, time_spent/1000);
+		fprintf(arqtxt, "%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
 		
 		free(vetor);
 	}
 	
 	printf("\n\n--------------- Selectionsort ---------------\n\n");
+	fprintf(arqtxt, "\n\n--------------- Selectionsort ---------------\n\n");
 	
 	for(t = TAM; t <= 5000; t += TAM) {
 		vetor = (int *) malloc (t * sizeof(int)); 
@@ -310,12 +281,14 @@ int main() {
 				
 			}
 		printf("%d: %f\n", t, time_spent/1000);
+		fprintf(arqtxt, "%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
 		
 		free(vetor);
 	} 
 	
 	printf("\n\n--------------- Mergesort ---------------\n\n");
+	fprintf(arqtxt, "\n\n--------------- Mergesort ---------------\n\n");
 	
 	for(t = TAM; t <= 5000; t += TAM) {
 		vetor = (int *) malloc (t * sizeof(int)); 
@@ -335,12 +308,14 @@ int main() {
 				
 			}
 		printf("%d: %f\n", t, time_spent/1000);
+		fprintf(arqtxt, "%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
 		
 		free(vetor);
 	} 
 	
 	printf("\n\n--------------- Quicksort ---------------\n\n");
+	fprintf(arqtxt, "\n\n--------------- Quicksort ---------------\n\n");
 	
 	for(t = TAM; t <= 5000; t += TAM) {
 		vetor = (int *) malloc (t * sizeof(int)); 
@@ -360,37 +335,14 @@ int main() {
 				
 			}
 		printf("%d: %f\n", t, time_spent/1000);
+		fprintf(arqtxt, "%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
 		
 		free(vetor);
 	}
 	
-	printf("\n\n--------------- Radixsort ---------------\n\n");
-	
-	for(t = TAM; t <= 5000; t += TAM) {
-		vetor = (int *) malloc (t * sizeof(int)); 
-		if(vetor == NULL) {
-			printf("Nao foi possível alocar memória para o vetor...");
-			fclose(file);
-			return 1;
-		}
-			for(int f=0; f<1000; f++) {
-				leituraArq(vetor, file, t);
-				
-				clock_t begin = clock();
-				radixSort(vetor, t);
-				clock_t end = clock();
-				
-				time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-				
-			}
-		printf("%d: %f\n", t, time_spent/1000);
-		time_spent = 0;
-		
-		free(vetor);
-	} 
-	
 	printf("\n\n--------------- Heapsort ---------------\n\n");
+	fprintf(arqtxt, "\n\n--------------- Heapsort ---------------\n\n");
 	
 	for(t = TAM; t <= 5000; t += TAM) {
 		vetor = (int *) malloc (t * sizeof(int)); 
@@ -410,6 +362,7 @@ int main() {
 				
 			}
 		printf("%d: %f\n", t, time_spent/1000);
+		fprintf(arqtxt, "%d: %f\n", t, time_spent/1000);
 		time_spent = 0;
 		
 		for(int i = 0; i < t && t == 5000; i++) {
