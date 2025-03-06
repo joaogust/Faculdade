@@ -1,5 +1,3 @@
-Aqui está uma versão organizada e visualmente atraente para o arquivo `README.md` do seu repositório:  
-
 # 📚 Repositório de Sistemas de Informação  
 
 Bem-vindo ao repositório de materiais do curso de **Bacharelado em Sistemas de Informação**, oferecido pelo **Instituto Federal de São Paulo, campus São Paulo**.  
