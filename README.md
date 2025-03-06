@@ -35,10 +35,7 @@ O Bacharelado em Sistemas de Informação prepara profissionais para projetar, d
 
 ## ✉️ Contato  
 Se precisar entrar em contato, envie um e-mail para:  
-📧 [joaogustavodossantoss@gmail.com](mailto:joaogustavodossantoss@gmail.com)  
-
-Ou confira meu perfil no GitHub:  
-🌐 [@joaogust](https://github.com/joaogust)
+📧 [joaogustavodossantoss@gmail.com](mailto:joaogustavodossantoss@gmail.com)
 
 ---
 
